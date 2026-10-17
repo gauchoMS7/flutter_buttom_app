@@ -1,4 +1,4 @@
-package com.example.flutter_buttom_app
+package com.example.flutter_button_app
 
 import io.flutter.embedding.android.FlutterActivity
 
