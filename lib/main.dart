@@ -98,6 +98,56 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+        // Top-right hamburger menu button
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              tooltip: 'Open Menu',
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
+      ),
+      // Right-side drawer containing app screen names
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: const Text(
+                'Navigation Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home Screen'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.looks_two),
+              title: const Text('Second Screen'),
+              onTap: () {
+                Navigator.pop(context); // Close the drawer
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        const SecondScreen(title: 'Second Screen'),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
       body: Stack(
         children: [
@@ -143,6 +193,117 @@ class _MyHomePageState extends State<MyHomePage> {
             child: const Icon(Icons.remove),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// Second Screen containing only Increment and Reset buttons
+class SecondScreen extends StatefulWidget {
+  const SecondScreen({super.key, required this.title});
+
+  final String title;
+
+  @override
+  State<SecondScreen> createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      _counter++;
+    });
+  }
+
+  void _resetCounter() {
+    setState(() {
+      _counter = 0;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(widget.title),
+        // Top-right hamburger menu button for second screen as well
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              tooltip: 'Open Menu',
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
+      ),
+      endDrawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              child: const Text(
+                'Navigation Menu',
+                style: TextStyle(color: Colors.white, fontSize: 24),
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home Screen'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+                Navigator.pop(context); // Return to Home screen
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.looks_two),
+              title: const Text('Second Screen'),
+              onTap: () {
+                Navigator.pop(context); // Close drawer
+              },
+            ),
+          ],
+        ),
+      ),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text('Second Screen Count:'),
+                Text(
+                  '$_counter',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 16.0 + MediaQuery.of(context).padding.bottom,
+            left: 16.0,
+            child: FloatingActionButton(
+              onPressed: _resetCounter,
+              tooltip: 'Reset',
+              heroTag: 'resetButtonSecond',
+              child: const Icon(Icons.refresh),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        heroTag: 'incrementButtonSecond',
+        child: const Icon(Icons.add),
       ),
     );
   }
