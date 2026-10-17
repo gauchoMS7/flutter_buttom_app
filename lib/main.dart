@@ -113,8 +113,9 @@ class _MyHomePageState extends State<MyHomePage> {
               ],
             ),
           ),
+          // Positioned widget updated to clear the Android Navigation Bar
           Positioned(
-            bottom: 16.0,
+            bottom: 16.0 + MediaQuery.of(context).padding.bottom,
             left: 16.0,
             child: FloatingActionButton(
               onPressed: _resetCounter,
